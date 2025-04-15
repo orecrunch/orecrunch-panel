@@ -2,7 +2,12 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Setup
+
+## Before
+
+Before setup pls run:
+`pnpm db:generate` and then `pnpm db:push`
+## Setup 
 
 Make sure to install dependencies:
 
