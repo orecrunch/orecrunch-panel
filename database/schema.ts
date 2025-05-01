@@ -1,3 +1,4 @@
+import type { WebAuthnCredential } from "#auth-utils";
 import { relations, sql } from "drizzle-orm"
 import { integer, sqliteTable, text, primaryKey,  } from "drizzle-orm/sqlite-core"
 
@@ -11,22 +12,37 @@ export const users = sqliteTable("user", {
   image: text("image").notNull(),
 })
 
-export const credentials = sqliteTable("credentials", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  type: text("type").notNull(),
-  credentialsId: text("creadentialsId").notNull(),
-  user_id: text("userId").notNull().references(() => users.id)
-})
-
+export const credentials = sqliteTable(
+  'credentials',
+  {
+    userId: text('userId')
+      .notNull()
+      .references(() => users.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      }),
+    id: text('id').notNull().unique().$defaultFn(() => crypto.randomUUID()),
+    publicKey: text('publicKey').notNull(),
+    counter: integer('counter'),
+    backedUp: integer('backedUp', {
+      mode:"boolean"
+    }),
+    transports: text('transports', { mode: 'json' }).$type<WebAuthnCredential['transports']>(),
+    type: text("type").notNull(),
+    
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.id] }),
+  })
+);
 
 export const credentialsRelation = relations(credentials, ({one}) => ({
-user: one(users, {
-fields: [credentials.user_id],
-references: [users.id]
-})
-}))
+  user: one(users, {
+  fields: [credentials.userId],
+  references: [users.id]
+  })
+  }))
+
 
 export const servers = sqliteTable("servers", {
   id: text("id")
@@ -54,20 +70,6 @@ export const server_permissions = sqliteTable("server_permissions", {
 })
 
 
-export const serverPermissionsRelations = relations(server_permissions, ({one}) => ({
-	user: one(users, {
-		fields: [server_permissions.user_id],
-		references: [users.id]
-	}),
-	server: one(servers, {
-		fields: [server_permissions.server_id],
-		references: [servers.id]
-	}),
-	permission: one(permissions, {
-		fields: [server_permissions.permission],
-		references: [permissions.id]
-	}),
-}));
 
  
 

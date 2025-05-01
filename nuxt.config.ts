@@ -27,17 +27,9 @@ export default defineNuxtConfig({
       host: '127.0.0.1',
     },
   },
-
-
-  runtimeConfig: {
-    oauth:{
-      
-      github: {
-
-      }
-    }
+  auth: {
+    webAuthn: true
   },
-
   alias: {
     "~types": "./types/"
   },

@@ -50,9 +50,13 @@ const items = [
       {
         label: 'Credentials',
         to: '/account/credentials',
-        exact: true,
 
-      }
+      },
+      {
+        label: 'Security',
+        to: '/account/security',
+
+      },
     ]
     },
     {

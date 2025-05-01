@@ -14,6 +14,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  
 
   const user = await lookup(loginData.email, loginData.password);
 

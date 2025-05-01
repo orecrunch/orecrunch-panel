@@ -1,0 +1,4 @@
+interface SessionResponse {
+    user?: any;
+  }
+

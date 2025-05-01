@@ -20,7 +20,7 @@
       Submit
     </UButton>
   </UForm>
-  <a href="/account/login" class="text-xs text-(--ui-text-muted) self-center underline cursor-pointer">You have an Account? Login here</a>
+  <a href="/auth/login" class="text-xs text-(--ui-text-muted) self-center underline cursor-pointer">You have an Account? Login here</a>
   </div>
     </div>
 </template>
@@ -56,7 +56,9 @@ async function onSubmit(event: FormSubmitEvent<signupschema>) {
     toast.add({ title: error.value?.data.message ,description: `Please verify your credentials.` ,  color: 'error' })
   }else {
     toast.add({ title: 'Success', description: 'The form has been submitted.', color: 'success' });
-    await navigateTo("/");
+    await navigateTo("/", {
+      external: true
+    });
   }
   
   

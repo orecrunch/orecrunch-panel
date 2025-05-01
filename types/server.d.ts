@@ -1,0 +1,3 @@
+interface AttachRequest {
+    user?: string;
+  }
